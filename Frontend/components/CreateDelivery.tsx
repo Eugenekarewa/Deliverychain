@@ -1,35 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import { useContractWrite, useWaitForTransaction } from "wagmi"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { deliveryManagementABI, deliveryManagementAddress } from "@/lib/contracts"
+import type React from "react";
+import { useState } from "react";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi"; // Use v1.x hooks
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { deliveryManagementABI, deliveryManagementAddress } from "@/lib/contracts";
 
 export default function CreateDelivery() {
-  const [deliveryId, setDeliveryId] = useState("")
-  const [courier, setCourier] = useState("")
-  const [recipient, setRecipient] = useState("")
-  const [totalCost, setTotalCost] = useState("")
+  const [deliveryId, setDeliveryId] = useState("");
+  const [courier, setCourier] = useState("");
+  const [recipient, setRecipient] = useState("");
+  const [totalCost, setTotalCost] = useState("");
 
-  const { write, data } = useContractWrite({
-    address: deliveryManagementAddress,
-    abi: deliveryManagementABI,
-    functionName: "createDelivery",
-  })
+  const { writeContract, data } = useWriteContract();
 
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  })
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
+    hash: data,
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    write({
+    e.preventDefault();
+    writeContract({
+      address: deliveryManagementAddress,
+      abi: deliveryManagementABI,
+      functionName: "createDelivery",
       args: [BigInt(deliveryId), courier, recipient, BigInt(totalCost)],
-    })
-  }
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -66,6 +64,5 @@ export default function CreateDelivery() {
       </Button>
       {isSuccess && <p className="text-green-500">Delivery created successfully!</p>}
     </form>
-  )
+  );
 }
-

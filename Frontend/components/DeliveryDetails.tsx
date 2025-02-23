@@ -1,118 +1,64 @@
-"use client"
+"use client";
 
-import { useContractRead, useContractWrite, useWaitForTransaction } from "wagmi"
-import { Button } from "@/components/ui/button"
-import {
-  deliveryManagementABI,
-  deliveryManagementAddress,
-  fiatPaymentABI,
-  fiatPaymentAddress,
-  proofOfDeliveryABI,
-  proofOfDeliveryAddress,
-} from "@/lib/contracts"
+import { Suspense } from "react";
+import { useReadContract, useWaitForTransactionReceipt } from "wagmi";
+import { deliveryManagementABI, deliveryManagementAddress } from "@/lib/contracts";
 
 interface DeliveryDetailsProps {
-  deliveryId: number
+  deliveryId: number;
 }
 
-export default function DeliveryDetails({ deliveryId }: DeliveryDetailsProps) {
-  const { data: delivery } = useContractRead({
+interface Delivery {
+  sender: string;
+  courier: string;
+  recipient: string;
+  totalCost: bigint;
+  isDelivered: boolean;
+}
+
+function DeliveryDetailsContent({ deliveryId }: DeliveryDetailsProps) {
+  const { data: delivery } = useReadContract({
     address: deliveryManagementAddress,
     abi: deliveryManagementABI,
-    functionName: "deliveries",
+    functionName: "getDelivery",
     args: [BigInt(deliveryId)],
-  })
+  });
 
-  const { data: isApproved } = useContractRead({
-    address: proofOfDeliveryAddress,
-    abi: proofOfDeliveryABI,
-    functionName: "isDeliveryApproved",
-    args: [BigInt(deliveryId)],
-  })
-
-  const { data: depositAmount } = useContractRead({
-    address: fiatPaymentAddress,
-    abi: fiatPaymentABI,
-    functionName: "deposits",
-    args: [BigInt(deliveryId)],
-  })
-
-  const { write: confirmDelivery, data: confirmData } = useContractWrite({
+  const { data: transactionHash } = useReadContract({
     address: deliveryManagementAddress,
     abi: deliveryManagementABI,
-    functionName: "confirmDelivery",
-  })
+    functionName: "getTransactionHash",
+    args: [BigInt(deliveryId)],
+  });
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransaction({
-    hash: confirmData?.hash,
-  })
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
+    hash: transactionHash as `0x${string}`,
+  });
 
-  const { write: approveDelivery, data: approveData } = useContractWrite({
-    address: proofOfDeliveryAddress,
-    abi: proofOfDeliveryABI,
-    functionName: "approveDelivery",
-  })
+  const typedDelivery = delivery as Delivery | null;
 
-  const { isLoading: isApproving, isSuccess: isApproveSuccess } = useWaitForTransaction({
-    hash: approveData?.hash,
-  })
-
-  if (!delivery) {
-    return <p>Loading delivery details...</p>
-  }
-
-  const [sender, courier, recipient, totalCost, isDelivered, isPaid] = delivery
-
-  const handleConfirmDelivery = () => {
-    confirmDelivery({ args: [BigInt(deliveryId)] })
-  }
-
-  const handleApproveDelivery = () => {
-    approveDelivery({ args: [BigInt(deliveryId)] })
+  if (!typedDelivery) {
+    return <div>Loading delivery details...</div>;
   }
 
   return (
     <div className="space-y-4">
-      <p>
-        <strong>Sender:</strong> {sender}
-      </p>
-      <p>
-        <strong>Courier:</strong> {courier}
-      </p>
-      <p>
-        <strong>Recipient:</strong> {recipient}
-      </p>
-      <p>
-        <strong>Total Cost:</strong> {totalCost.toString()} wei
-      </p>
-      <p>
-        <strong>Is Delivered:</strong> {isDelivered ? "Yes" : "No"}
-      </p>
-      <p>
-        <strong>Is Paid:</strong> {isPaid ? "Yes" : "No"}
-      </p>
-      <p>
-        <strong>Is Approved:</strong> {isApproved ? "Yes" : "No"}
-      </p>
-      <p>
-        <strong>Deposit Amount:</strong> {depositAmount?.toString() || "0"} wei
-      </p>
-
-      <div className="space-y-2">
-        {!isDelivered && (
-          <Button onClick={handleConfirmDelivery} disabled={isConfirming}>
-            {isConfirming ? "Confirming..." : "Confirm Delivery"}
-          </Button>
-        )}
-        {isDelivered && !isApproved && (
-          <Button onClick={handleApproveDelivery} disabled={isApproving}>
-            {isApproving ? "Approving..." : "Approve Delivery"}
-          </Button>
-        )}
-      </div>
-      {isConfirmed && <p className="text-green-500">Delivery confirmed successfully!</p>}
-      {isApproveSuccess && <p className="text-green-500">Delivery approved successfully!</p>}
+      <h2 className="text-2xl font-bold">Delivery #{deliveryId}</h2>
+      <p>Sender: {typedDelivery.sender}</p>
+      <p>Courier: {typedDelivery.courier}</p>
+      <p>Recipient: {typedDelivery.recipient}</p>
+      <p>Total Cost: {typedDelivery.totalCost.toString()} wei</p>
+      <p>Status: {typedDelivery.isDelivered ? "Delivered" : "In Transit"}</p>
+      {isLoading && <p>Waiting for transaction confirmation...</p>}
+      {isSuccess && <p className="text-green-500">Transaction confirmed!</p>}
     </div>
-  )
+  );
 }
 
+export default function DeliveryDetails({ deliveryId }: DeliveryDetailsProps) {
+  return (
+    <Suspense fallback={<div>Loading delivery details...</div>}>
+      <DeliveryDetailsContent deliveryId={deliveryId} />
+    </Suspense>
+  );
+}

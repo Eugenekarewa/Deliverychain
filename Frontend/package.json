@@ -38,6 +38,7 @@
     "@radix-ui/react-toggle-group": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
     "@tanstack/react-query": "latest",
+    "@wagmi/core": "^2.16.4",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -63,8 +64,8 @@
     "typescript": "latest",
     "uploadthing": "latest",
     "vaul": "^0.9.6",
-    "viem": "latest",
-    "wagmi": "latest",
+    "viem": "^2.23.4",
+    "wagmi": "^2.14.11",
     "zod": "^3.24.1"
   },
   "devDependencies": {
