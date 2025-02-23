@@ -1,0 +1,20 @@
+Deployment Information:
+
+Command to deploy contracts:
+npx hardhat run scripts/deploy.js --network sepolia
+
+Deployment Details:
+- Deploying contracts with the account: 0xC3Ee82B7a785617C1Cb5FA9f3C703Dec854f975a
+- DeliveryManagement deployed to: 0x604AF6A9B5f93853A504a3B3276ffEdCF9645F93
+- FiatPayment deployed to: 0x4E164A5a2C75A159f60ed28AD8F14f26Cc81f0A4
+- ProofOfDelivery deployed to: 0x5758fD126af800243760e545E30D4d334c353b56
+
+Verification Status:
+- DeliveryManagement: Already verified on the block explorer.
+- FiatPayment: Already verified on the block explorer.
+- ProofOfDelivery: Successfully verified on the block explorer.
+
+Contract Addresses:
+- DeliveryManagement: 0x604AF6A9B5f93853A504a3B3276ffEdCF9645F93
+- FiatPayment: 0x4E164A5a2C75A159f60ed28AD8F14f26Cc81f0A4
+- ProofOfDelivery: 0x5758fD126af800243760e545E30D4d334c353b56
