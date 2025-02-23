@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { ArrowRight, Package, Shield, Clock, CheckCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import type React from "react";
+import { ArrowRight, Package, Shield, Clock, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button"; // Import your custom Button component
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -22,13 +21,13 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/deliveries">
-                <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90">
+                <Button size="lg" className="w-full sm:w-auto">
                   Get Started
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="/about">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   Learn More
                 </Button>
               </Link>
@@ -69,7 +68,7 @@ export default function Home() {
             Join the future of delivery management today and experience the power of blockchain technology.
           </p>
           <Link href="/deliveries">
-            <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90">
+            <Button size="lg" className="w-full sm:w-auto">
               Start Shipping
               <Package className="ml-2 h-5 w-5" />
             </Button>
@@ -77,7 +76,7 @@ export default function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
 function FeatureCard({
@@ -85,9 +84,9 @@ function FeatureCard({
   title,
   description,
 }: {
-  icon: React.ReactNode
-  title: string
-  description: string
+  icon: React.ReactNode;
+  title: string;
+  description: string;
 }) {
   return (
     <div className="p-6 rounded-lg border border-gray-200 hover:border-primary/50 transition-colors">
@@ -95,6 +94,5 @@ function FeatureCard({
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-gray-600">{description}</p>
     </div>
-  )
+  );
 }
-

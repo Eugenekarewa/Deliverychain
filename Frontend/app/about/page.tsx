@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function AboutPage() {
   return (
@@ -25,11 +25,10 @@ export default function AboutPage() {
         <li>Decentralized dispute resolution</li>
       </ul>
       <Link href="/deliveries">
-        <Button size="lg" className="mt-4">
+        <Button className="mt-4"> {/* Removed the `size` prop */}
           Start Using DeliverChain
         </Button>
       </Link>
     </div>
-  )
+  );
 }
-

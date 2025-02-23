@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useAccount, useConnect, useDisconnect } from "wagmi"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Package } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Package } from "lucide-react";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { address, isConnected } = useAccount()
-  const { connect, connectors } = useConnect()
-  const { disconnect } = useDisconnect()
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { address, isConnected } = useAccount();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
 
-  const mainConnector = connectors[0]
+  const mainConnector = connectors[0];
 
   const handleConnectWallet = () => {
     if (isConnected) {
-      disconnect()
+      disconnect();
     } else {
-      connect({ connector: mainConnector })
+      connect({ connector: mainConnector });
     }
-  }
+  };
 
   return (
     <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 fixed w-full z-50">
@@ -100,6 +100,5 @@ export default function Navbar() {
         </div>
       )}
     </nav>
-  )
+  );
 }
-

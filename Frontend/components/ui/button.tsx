@@ -1,10 +1,15 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+// Define the ButtonProps interface
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost";
+  size?: "default" | "sm" | "lg";
+}
 
-export const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, children, variant = "default", size = "default", ...props }, ref) => {
     return (
       <button
@@ -18,15 +23,15 @@ export const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
           size === "default" && "px-4 py-2",
           size === "sm" && "px-3 py-1.5 rounded-md",
           size === "lg" && "px-8 py-3 rounded-md",
-          className,
+          className
         )}
         ref={ref}
         {...props}
       >
         {children}
       </button>
-    )
-  },
-)
-Button.displayName = "Button"
+    );
+  }
+);
 
+Button.displayName = "Button";
