@@ -1,6 +1,6 @@
-export const deliveryManagementAddress = "0x524397B66956945a8DBF44328bf264934EaA3a09" // Replace with actual contract address
-export const fiatPaymentAddress = "0x794791b8418E0db664988A83BCdC8a108d0dA7E3" // Replace with actual contract address
-export const proofOfDeliveryAddress = "0xc8e02F203e32E04424B4856A81FE21c4e694372A" // Replace with actual contract address
+export const deliveryManagementAddress = "0x524397B66956945a8DBF44328bf264934EaA3a09" 
+export const fiatPaymentAddress = "0x794791b8418E0db664988A83BCdC8a108d0dA7E3" 
+export const proofOfDeliveryAddress = "0xc8e02F203e32E04424B4856A81FE21c4e694372A" 
 
 export const deliveryManagementABI = [
   {
